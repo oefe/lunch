@@ -15,9 +15,7 @@ class MyTableViewDataSource (object):
 				self.orders.load_json(f)
 		except IOError, e:
 			print e
-			
-		print  self.orders.already_ordered
-		
+					
 	def save(self):
 		with open('orders.json', 'wb') as f:
 			self.orders.dump_json(f)
