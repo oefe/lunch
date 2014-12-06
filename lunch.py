@@ -2,6 +2,7 @@
 
 import functools
 import order
+import ordermail
 import ui
 
 WOCHENTAGE = 'Montag Dienstag Mittwoch Donnerstag Freitag'.split()
@@ -76,12 +77,12 @@ class MyTableViewDataSource (object):
 	
 	def commit(self, sender, tableview):
 		finalize = not self.orders.already_ordered
-		if finalize:
-			pass
 		self.orders.already_ordered = finalize 
 		self.save()
 		tableview.reload_data()
 		self.configure_commit_button(sender)
+		if finalize:
+			ordermail.send(self.orders)
 		
 	def configure_commit_button(self, button):
 		if self.orders.already_ordered:
