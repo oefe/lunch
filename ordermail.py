@@ -15,13 +15,16 @@ Ich habe nächste Woche %s bestellt.
 
 Ich liebe Dich'''
 
+def format_days(order):
+		days = itertools.compress(WOCHENTAGE, order.next)
+		return ', '.join(days)
+
 def mail_url(order):
 		this_monday = order.first_day()
 		next_monday = this_monday + datetime.timedelta(days=7)
 		next_week = next_monday.isocalendar()[1]
 		subject = SUBJECT_FORMAT % next_week
-		days = itertools.compress(WOCHENTAGE, order.next)
-		body = BODY_FORMAT % ', '.join(days)
+		body = BODY_FORMAT % format_days(order)
 		#query = urllib.urlencode({'subject': subject, 'body': body})
 		query = 'subject=%s&body=%s' % (urllib.quote(subject), urllib.quote(body))
 		parts = ('mailto', TO_ADDRESS, '', '', query, '')
