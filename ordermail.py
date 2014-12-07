@@ -14,10 +14,17 @@ BODY_FORMAT = '''Hallo Schatz,
 Ich habe nächste Woche %s bestellt.
 
 Ich liebe Dich'''
+DAYS_NONE = 'nichts'
+DAYS_ALL = 'jeden Tag'
 
 def format_days(order):
-		days = itertools.compress(WOCHENTAGE, order.next)
-		return ', '.join(days)
+		if not any(order.next):
+			return DAYS_NONE
+		elif all(order.next):
+			return DAYS_ALL
+		else: 
+			days = itertools.compress(WOCHENTAGE, order.next)
+			return ', '.join(days)
 
 def mail_url(order):
 		this_monday = order.first_day()
@@ -58,7 +65,26 @@ if __name__ == '__main__':
 			ordered = [w in query['body'][0] for w in WOCHENTAGE]
 			self.assertSequenceEqual(ordered, [True, False, False, False, False])
 
-			
+		def test_format_days(self):
+			self.helper_test_format_days_some(True, False, True, False, False)
+			self.helper_test_format_days_some(True, False, False, False, False)			
+			self.helper_test_format_days_some(False, True, True, True, True)
+			self.helper_test_format_days_special(DAYS_NONE, [False] * 5)
+			self.helper_test_format_days_special(DAYS_ALL, [True] * 5)
+						
+		def helper_test_format_days_some(self, *some_days):
+			a = order.Order()
+			a.next = some_days
+			s = format_days(a)
+			found = [w in s for w in WOCHENTAGE]
+			self.assertSequenceEqual(found, some_days)
+						
+		def helper_test_format_days_special(self, expected, some_days):
+			a = order.Order()
+			a.next = some_days
+			s = format_days(a)
+			self.assertEqual(s, expected)
+						
 		def clock(self):
 			return self.now
 			
