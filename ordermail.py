@@ -32,7 +32,6 @@ def mail_url(order):
 		next_week = next_monday.isocalendar()[1]
 		subject = SUBJECT_FORMAT % next_week
 		body = BODY_FORMAT % format_days(order)
-		#query = urllib.urlencode({'subject': subject, 'body': body})
 		query = 'subject=%s&body=%s' % (urllib.quote(subject), urllib.quote(body))
 		parts = ('mailto', TO_ADDRESS, '', '', query, '')
 		url = urlparse.urlunparse(parts)
