@@ -25,12 +25,14 @@ def format_days(order):
 		else: 
 			days = itertools.compress(WOCHENTAGE, order.next)
 			return ', '.join(days)
-
-def mail_url(order):
+			
+def next_week(order):
 		this_monday = order.first_day()
 		next_monday = this_monday + datetime.timedelta(days=7)
-		next_week = next_monday.isocalendar()[1]
-		subject = SUBJECT_FORMAT % next_week
+		return next_monday.isocalendar()[1]
+
+def mail_url(order):
+		subject = SUBJECT_FORMAT % next_week(order)
 		body = BODY_FORMAT % format_days(order)
 		query = 'subject=%s&body=%s' % (urllib.quote(subject), urllib.quote(body))
 		parts = ('mailto', TO_ADDRESS, '', '', query, '')
