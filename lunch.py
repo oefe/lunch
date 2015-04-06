@@ -50,7 +50,7 @@ class MyTableViewDataSource (object):
     def tableview_title_for_header(self, tableview, section):
         # Return a title for the given section.
         # If this is not implemented, no section headers will be shown.
-        return ['Aktuelle Woche', 'Nächste Woche'][section]
+        return self.orders.weeklabel(section)
 
     def tableview_can_delete(self, tableview, section, row):
         # Return True if the user should be able to delete the given row.
