@@ -2,7 +2,7 @@
 import datetime
 import json
 
-WOCHENTAGE = 'Montag Dienstag Mittwoch Donnerstag Freitag'.split()
+WEEKDAYS = 'Montag Dienstag Mittwoch Donnerstag Freitag'.split()
 WEEKLABEL = ['Diese Woche', 'Nächste Woche']
 
 class Order (object):
@@ -38,7 +38,7 @@ class Order (object):
 
     def label(self, week, day):
         d = self.first_day() + datetime.timedelta(weeks=week, days=day)
-        return '{wd} {d}.{m}.'.format(wd = WOCHENTAGE[day], d=d.day, m=d.month)
+        return '{wd} {d}.{m}.'.format(wd = WEEKDAYS[day], d=d.day, m=d.month)
         
     def weeklabel(self, week):
         d = self.first_day() + datetime.timedelta(weeks=week)
