@@ -5,8 +5,6 @@ import order
 import ordermail
 import ui
 
-WOCHENTAGE = 'Montag Dienstag Mittwoch Donnerstag Freitag'.split()
-
 class MyTableViewDataSource (object):
 
     def __init__(self):
@@ -46,7 +44,7 @@ class MyTableViewDataSource (object):
             switch.action = functools.partial(self.switch_toggled, row=row)
 
         cell.content_view.add_subview(switch)
-        cell.text_label.text = WOCHENTAGE[row]
+        cell.text_label.text = self.orders.label(section, row)
         return cell
 
     def tableview_title_for_header(self, tableview, section):

@@ -1,6 +1,8 @@
 import datetime
 import json
 
+WOCHENTAGE = 'Montag Dienstag Mittwoch Donnerstag Freitag'.split()
+
 class Order (object):
 
     def __init__(self, clock=datetime.datetime.now):
@@ -32,6 +34,10 @@ class Order (object):
         weekday = today.weekday()
         return today - datetime.timedelta(days=weekday)
 
+    def label(self, week, day):
+        d = self.first_day() + datetime.timedelta(weeks=week, days=day)
+        return '{wd} {d}.{m}.'.format(wd = WOCHENTAGE[day], d=d.day, m=d.month)
+        
     def _json_keys(self):
         this_monday = self.first_day()
         next_monday = this_monday + datetime.timedelta(days=7)
@@ -98,7 +104,15 @@ if __name__ == '__main__':
             self.assertItemsEqual(b.current, [False] * 5)
             self.assertItemsEqual(b.next, [False] * 5)
             self.assertFalse(b.already_ordered)
-
+        
+        def test_label(self):
+            self.now = datetime.datetime(2015, 4, 6, 12, 30)
+            a = Order(clock=self.clock)
+            self.assertEqual(a.label(0, 0), 'Montag 6.4.')                
+            self.assertEqual(a.label(0, 4), 'Freitag 10.4.')
+            self.assertEqual(a.label(1, 0), 'Montag 13.4.')                
+            self.assertEqual(a.label(1, 4), 'Freitag 17.4.')
+        
         def save(self, order):
             f = StringIO.StringIO()
             order.dump_json(f)
