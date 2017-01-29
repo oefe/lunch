@@ -10,13 +10,13 @@ class MyTableViewDataSource (object):
     def __init__(self):
         self.orders = order.Order()
         try:
-            with open('orders.json', 'rb') as f:
+            with open('orders.json', 'r') as f:
                 self.orders.load_json(f)
-        except IOError, e:
-            print e
+        except IOError as e:
+            print(e)
 
     def save(self):
-        with open('orders.json', 'wb') as f:
+        with open('orders.json', 'w') as f:
             self.orders.dump_json(f)
 
     def tableview_number_of_sections(self, tableview):
@@ -69,7 +69,7 @@ class MyTableViewDataSource (object):
         pass
 
     def switch_toggled(self, sender, row):
-        print row, sender.value
+        print(row, sender.value)
         self.orders.next[row] = sender.value
         self.save()
 
@@ -100,3 +100,4 @@ commit_button.action = functools.partial(data_source.commit, tableview=tableview
 data_source.configure_commit_button(commit_button)
 
 v.present(style='popover')
+

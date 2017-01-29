@@ -55,15 +55,15 @@ class Order (object):
         return '{year}-{week:02}'.format(year=year, week=week)
 
 if __name__ == '__main__':
-    import StringIO
+    import io
     import unittest
 
     class TestOrder(unittest.TestCase):
 
         def test_empty(self):
             b = Order()
-            self.assertItemsEqual(b.current, [False] * 5)
-            self.assertItemsEqual(b.next, [False] * 5)
+            self.assertEqual(list(b.current), [False] * 5)
+            self.assertEqual(b.next, [False] * 5)
             self.assertFalse(b.already_ordered)
 
         def test_save_load(self):
@@ -107,8 +107,8 @@ if __name__ == '__main__':
             json = self.save(a)
             self.now = datetime.datetime(2014, 7, 8, 12, 30)
             b = self.load(json)
-            self.assertItemsEqual(b.current, [False] * 5)
-            self.assertItemsEqual(b.next, [False] * 5)
+            self.assertEqual(list(b.current), [False] * 5)
+            self.assertEqual(b.next, [False] * 5)
             self.assertFalse(b.already_ordered)
         
         def test_label(self):
@@ -132,13 +132,13 @@ if __name__ == '__main__':
             self.assertEqual(a.weeklabel(1), 'Nächste Woche - KW1')
                         
         def save(self, order):
-            f = StringIO.StringIO()
+            f = io.StringIO()
             order.dump_json(f)
             return f.getvalue()
 
         def load(self, json):
             #print json
-            f = StringIO.StringIO(json)
+            f = io.StringIO(json)
             order = Order(clock=self.clock)
             order.load_json(f)
             return order
@@ -147,3 +147,4 @@ if __name__ == '__main__':
             return self.now
 
     unittest.main()
+

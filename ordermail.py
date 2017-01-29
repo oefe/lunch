@@ -2,8 +2,7 @@
 
 import datetime
 import itertools
-import urllib
-import urlparse
+import urllib.parse
 import webbrowser
 
 TO_ADDRESS = 'somebody@example.com'
@@ -34,9 +33,9 @@ def next_week(order):
 def mail_url(order):
     subject = SUBJECT_FORMAT % next_week(order)
     body = BODY_FORMAT % format_days(order)
-    query = 'subject=%s&body=%s' % (urllib.quote(subject), urllib.quote(body))
+    query = 'subject=%s&body=%s' % (urllib.parse.quote(subject), urllib.parse.quote(body))
     parts = ('mailto', TO_ADDRESS, '', '', query, '')
-    url = urlparse.urlunparse(parts)
+    url = urllib.parse.urlunparse(parts)
     return url
 
 def send(order):
@@ -53,12 +52,12 @@ if __name__ == '__main__':
             a = order.Order(clock=self.clock)
             a.next[0] = True
             url = mail_url(a)
-            parts = urlparse.urlparse(url)
+            parts = urllib.parse.urlparse(url)
             self.assertEqual(parts.scheme, 'mailto')
             self.assertEqual(parts.netloc, TO_ADDRESS)
             self.assertEqual(parts.path, '')
             self.assertEqual(parts.params, '')
-            query = urlparse.parse_qs(parts.query,
+            query = urllib.parse.parse_qs(parts.query,
                                       keep_blank_values=True,
                                       strict_parsing=True)
             self.assertEqual(parts.fragment, '')
