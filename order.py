@@ -125,6 +125,12 @@ if __name__ == '__main__':
             self.assertEqual(a.weeklabel(0), 'Diese Woche - KW15')                
             self.assertEqual(a.weeklabel(1), 'Nächste Woche - KW16')
                         
+        def test_weeklabelOnNewYearsEve(self):
+            self.now = datetime.datetime(2015, 12, 31, 12, 30)
+            a = Order(clock=self.clock)
+            self.assertEqual(a.weeklabel(0), 'Diese Woche - KW53')                
+            self.assertEqual(a.weeklabel(1), 'Nächste Woche - KW1')
+                        
         def save(self, order):
             f = StringIO.StringIO()
             order.dump_json(f)
