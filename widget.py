@@ -28,7 +28,7 @@ try:
 		day_label = order.WEEKDAYS[0]
 		day_status = orders.next[0]
 	day_message = 'Kantine' if day_status else 'keine Kantine'
-	message = day_label + ' ' + day_message
+	message = day_label + '\n' + day_message
 		
 except IOError as e:
 	print(e)
@@ -42,13 +42,12 @@ def button_action(sender):
 	
 v = ui.View(frame=(0, 0, 300, 110))
 
-label = ui.Label(frame=(0, 0, 150, 110), flex='lwh', font=('<System>', 24), alignment=ui.ALIGN_CENTER, name='result_label')
-label.text = message
+label = ui.Label(frame=(20, 0, 200, 110), flex='lwh', font=('<System>', 24), line_break_mode = ui.LB_WORD_WRAP, number_of_lines = 0, text = message)
 v.add_subview(label)
 
 if not orders.already_ordered:
-	button = ui.Button(title='Bestellen', font=('<System>', 24), flex='rwh', action=button_action)
-	button.frame = (200, 0, 150, 110)
+	button = ui.Button(title='Bestellen', font=('<System>', 16), flex='rwh', action=button_action)
+	button.frame = (200, 0, 100, 110)
 	v.add_subview(button)
 
 appex.set_widget_view(v)
